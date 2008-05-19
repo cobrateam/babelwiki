@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<h1>Últimas Páginas</h1>
+
+{% for page in pages %}
+    <p>{{ page.title }} - <a href="/translate_page/{{ page.key.id }}/">leia mais</a></p>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+{% block js %}
+
+function load_sugestions(page, paragraph){
+
+    var url = '/sugestions/'+paragraph+'/'+page+'/';
+    
+    $('#sugestion_list').empty();
+    
+    $.getJSON(url, function(data){
+        $.each(data, function(id, s){
+            $('#sugestion_list').append('<p>' + s['sugestion'] + ' <a href="#" onclick="javascript:aprovar(' +  s['id'] + ')">Aprovar</a></p>');
+        });
+            
+    });
+}
+
+function aprovar(id){
+        $.post('/aprove_sugestion/' + id + '/', {}, function(data) {
+            alert('Sugestão aprovada com sucesso!');
+        });
+}
+{% endblock %}
+{% block jquery %}
+
+    var pg = '';
+    var pr = '';
+
+    $('#original a').click(function(){
+    
+        var url = '/add_sugestion/' + $(this).attr('id') + '/{{ page.key.id }}/';  
+        
+        pg = '{{ page.key.id }}';
+        pr = $(this).attr('id');
+        
+        $('#stextarea').val('');
+              
+        $('#tform').attr('action', url);
+        
+        load_sugestions(pg, pr);
+        
+        $('#sugestions').css('display', 'block');  
+        
+    });
+    
+
+    $('#tform').submit(function() { 
+        
+        $.post($(this).attr('action'), {'suggestion': $('#stextarea').val()}, function(data) {
+            alert('Sugestão enviada com sucesso!');
+            $('#stextarea').val('');
+            load_sugestions(pg, pr);
+        });
+        
+        return false;
+    });
+    
+    $(".close").click(function(){
+        $('#sugestions').css('display', 'none');
+        
+    });
+    
+    
+
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ page.title }}</h1>
+
+<div id="sugestions">
+    <a href="#" class="close">[ x ]</a>
+    <h2>Sugestions</h2>
+    <form method="post" action="" id="tform">
+        <label>Your Sugestion</label><br />
+        <textarea rows="5" cols="60" id="stextarea"></textarea>
+        <p><input type="submit" value="Send my suggestion" /></p>
+    </form>
+    <h2>Sugestion for this paragraph</h2>
+    <div id="sugestion_list"></div>
+
+</div>
+
+<p>Licença: {{ page.license }}</p>
+<p>Link: {{ page.link }}</p>
+<p>Data: {{ page.date|date:"d/m/Y" }}</p>
+
+<div id="original">
+{% for p in page.paragraphs %}
+    <div>{% ifequal p.translation.accepted False %}<a href="#" id="{{ p.id }}">Traduzir</a>{% endifequal %}{{ p.text }} {{ p.translation.suggestion }}</div>
+{% endfor %}
+</div>
+
+{% endblock %}

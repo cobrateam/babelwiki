@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Envie um novo texto</h1>
+
+<form method="post">
+    {% for field in form %}
+        <p>
+        {% if field.help_text %} {{ field.help_text }}{% endif %}
+        {% if field.errors %} <span class="myerrors">{{ field.errors }}</span>{% endif %}
+        {{ field.label_tag }}:<br />{{ field }}
+        </p>
+    {% endfor %}
+<p><input type="submit" value="Salvar" /></p>
+</form>
+
+{% endblock %}
