@@ -2,6 +2,7 @@
     margin: 0px;
     padding: 0px;
     color: #333;
+    font-size: 12px;
 }
 
 body {
@@ -38,7 +39,7 @@ p {
 
 #menu {
     float: right;
-    width: 420px;
+    width: 380px;
     margin: 40px;
     padding: 2px;
     background-color: #fff;

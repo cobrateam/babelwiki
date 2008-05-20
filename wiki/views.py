@@ -11,7 +11,15 @@ def about(request):
     return render_to_response('about.html')
     
 def contact(request):
-    return render_to_response('contact.html')
+
+    if request.POST:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.send()
+    else:
+        form = ContactForm()
+        
+    return render_to_response('contact.html', {'form':form})
     
 
 def pages(request):
