@@ -6,7 +6,14 @@
 <h1>Últimas Páginas</h1>
 
 {% for page in pages %}
-    <p>{{ page.title }} - <a href="/translate_page/{{ page.key.id }}/">leia mais</a></p>
+    <div>
+        <p>
+            {{ page.title }} - Adicionado por: {{ page.by }}<br />
+            <a href='/translate_page/{{ page.key.id }}/' class="language-square">pt-br</a>
+            - {{ page.percentage }}% traduzido
+        </p>
+    </div>
+    <hr />
 {% endfor %}
 
 {% endblock %}

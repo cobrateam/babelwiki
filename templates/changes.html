@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<h1>Últimas Alterações</h1>
+
+{% for c in changes %}
+    <div>Foi adicionada uma tradução para a página <a href="/translate_page/{{ c.translation.page.key.id }}/">{{ c.translation.page.title }}</a> as {{ c.modified|date:"d/m/Y h:i:s" }} por {{ c.by }}</div>
+{% endfor %}
+
+{% endblock %}

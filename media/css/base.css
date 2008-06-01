@@ -3,20 +3,38 @@
     padding: 0px;
     color: #333;
     font-size: 12px;
+    list-style-type: none;  
+    text-decoration: none;  
 }
 
 body {
     background-color: #dcf4f0;
 }
 
-p {
-    padding: 10px;
+p, .paragraph {
+    padding: 7px;
+}
+
+
+#main {
+    margin: 20px;
+}
+
+.both {
+    clear: both;
 }
 
 #content {
     background-color: #fff;
-    margin: 20px;
-    clear: both;
+    float: left;
+    width: 75%;
+    margin: 5px;
+}
+
+#tools {
+    float: right;
+    width: 15%;
+    margin: 5px;
 }
 
 #logo {
@@ -39,14 +57,10 @@ p {
 
 #menu {
     float: right;
-    width: 380px;
+    width: 440px;
     margin: 40px;
     padding: 2px;
     background-color: #fff;
-}
-
-#menu ul {
-    list-style-type: none;
 }
 
 #menu a {
@@ -63,15 +77,15 @@ p {
 }
 
 
-#sugestions {
+#suggestions {
     z-index: 999;
     position: absolute;
-    left: 50%;
-    background-color: #eee;
-    padding: 30px;
-    border: 1px solid #000;
+    left: 0px;
+    /*top: 0px;*/
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
     display: none;
-    margin-left: -250px;
 }
 
 .close {

@@ -10,9 +10,10 @@ urlpatterns = patterns('',
     (r'^contact/$', contact),    
     (r'^add_page/$', add_page),
     (r'^translate_page/(?P<page_id>\d+)/$', translate_page),
-    (r'^add_sugestion/(?P<paragraph_id>\d+)/(?P<page_id>\d+)/$', add_sugestion),
-    (r'^aprove_sugestion/(?P<id>\d+)/$', aprove_sugestion),    
-    (r'^sugestions/(?P<paragraph_id>\d+)/(?P<page_id>\d+)/$', sugestions),        
+    (r'^add_suggestion/(?P<paragraph_id>\d+)/(?P<page_id>\d+)/$', add_suggestion),
+    #(r'^aprove_suggestion/(?P<id>\d+)/$', aprove_suggestion),    
+    (r'^changes/$', changes),
+    (r'^suggestions/$', suggestions),        
     #url(r'^add_page/$', add_page, name="add_page"),
 
 )

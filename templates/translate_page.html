@@ -3,93 +3,86 @@
 {% block title %}{% endblock %}
 {% block js %}
 
-function load_sugestions(page, paragraph){
-
-    var url = '/sugestions/'+paragraph+'/'+page+'/';
-    
-    $('#sugestion_list').empty();
-    
-    $.getJSON(url, function(data){
-        $.each(data, function(id, s){
-            $('#sugestion_list').append('<p>' + s['sugestion'] + ' <a href="#" onclick="javascript:aprovar(' +  s['id'] + ')">Aprovar</a></p>');
-        });
-            
-    });
-}
-
-function aprovar(id){
-        $.post('/aprove_sugestion/' + id + '/', {}, function(data) {
-            alert('Sugestão aprovada com sucesso!');
-        });
-}
 {% endblock %}
 {% block jquery %}
-
-    var pg = '';
-    var pr = '';
-
-    $('#original a').click(function(){
     
-        var url = '/add_sugestion/' + $(this).attr('id') + '/{{ page.key.id }}/';  
-        
-        pg = '{{ page.key.id }}';
-        pr = $(this).attr('id');
-        
-        $('#stextarea').val('');
-              
-        $('#tform').attr('action', url);
-        
-        load_sugestions(pg, pr);
-        
-        $('#sugestions').css('display', 'block');  
-        
-    });
-    
+$('#original a').bind('mouseover', function(e){
 
-    $('#tform').submit(function() { 
-        
-        $.post($(this).attr('action'), {'suggestion': $('#stextarea').val()}, function(data) {
-            alert('Sugestão enviada com sucesso!');
-            $('#stextarea').val('');
-            load_sugestions(pg, pr);
-        });
-        
+    var e = e ? e : window.event;
+
+    $('#suggestions').css('top', e.pageY-90);
+    $('#suggestions').css('left', e.pageX);
+    $('#suggestions').css('display', 'block');
+
+    $('#original_text').empty();
+    $('#original_text').append($(this).attr('rel').trim());
+
+
+    $('#stextarea').val($(this).html().trim());
+
+    if (e.preventDefault) {
+        e.preventDefault();
+    } else {
         return false;
-    });
+    }
+
     
-    $(".close").click(function(){
-        $('#sugestions').css('display', 'none');
+    var url = '/add_suggestion/' + $(this).attr('id') + '/{{ page.key.id }}/';  
+    $('#tform').attr('action', url);
+    
+    $('#suggestions form').css('display', 'none');
+});
+
+$('#sugira').click(function(){
+    $('#suggestions form').css('display', 'block');
+});
+
+$('#tform').submit(function() { 
+ 
+    $.post($(this).attr('action'), {'suggestion': $('#stextarea').val()}, function(data) {
+        alert('Sugestão enviada com sucesso!');
+        $('#stextarea').val('');
+    });
         
-    });
+    return false;
+});
     
-    
+$(".close").click(function(){
+    $('#suggestions').css('display', 'none');
+});
 
 {% endblock %}
 
 {% block content %}
-
+<p id="teste"></p>
 <h1>{{ page.title }}</h1>
 
-<div id="sugestions">
+<div id="suggestions">
     <a href="#" class="close">[ x ]</a>
-    <h2>Sugestions</h2>
+    <h2>Texto Original</h2>
+    <p id="original_text">blable</p>
+    <a href="#" id="sugira">Sugira uma tradução melhor</a>
     <form method="post" action="" id="tform">
-        <label>Your Sugestion</label><br />
         <textarea rows="5" cols="60" id="stextarea"></textarea>
-        <p><input type="submit" value="Send my suggestion" /></p>
+        <p><input type="submit" value="Enviar" /></p>
     </form>
-    <h2>Sugestion for this paragraph</h2>
-    <div id="sugestion_list"></div>
-
 </div>
-
 <p>Licença: {{ page.license }}</p>
 <p>Link: {{ page.link }}</p>
 <p>Data: {{ page.date|date:"d/m/Y" }}</p>
+<p>Status da tradução: {{ page.percentage }}%</p>
 
 <div id="original">
 {% for p in page.paragraphs %}
-    <div>{% ifequal p.translation.accepted False %}<a href="#" id="{{ p.id }}">Traduzir</a>{% endifequal %}{{ p.text }} {{ p.translation.suggestion }}</div>
+    <div class="paragraph">
+	    <a href="#" rel="{{ p.text }}" id="{{ p.key.id }}">
+	    {% if p.translation %}
+	        {{ p.translation }}
+	    {% else %}
+	        {{ p.text }}
+	    {% endif %}
+        </a>
+    </div>    
 {% endfor %}
 </div>
 

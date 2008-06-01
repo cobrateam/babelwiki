@@ -4,15 +4,19 @@ from google.appengine.ext.db import djangoforms
 from google.appengine.api import mail
 
 class PageForm(djangoforms.ModelForm):
+
+    title = forms.CharField(required=True) 
+    #text = forms.CharField(required=True, widget=forms.widgets.Textarea)
+
     class Meta:
         model = Page
-        exclude = ['data', 'owner']
+        exclude = ['data', 'by']
         
         
 class TranslatorForm(djangoforms.ModelForm):
     class Meta:
         model = Translation
-        exclude = ['data', 'id', 'page', 'accepted']
+        exclude = ['data', 'id', 'page', 'accepted', 'by']
         
 class ContactForm(forms.Form):
     nome = forms.CharField(required=True)
